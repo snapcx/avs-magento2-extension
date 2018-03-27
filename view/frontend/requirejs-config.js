@@ -6,9 +6,9 @@ var config = {
                 }
             }
         },
-	"map": {
+    "map": {
         "*": {
-			responsehandler: 'Jframeworks_Addressvalidator/js/response_handler'
+            responsehandler: 'Jframeworks_Addressvalidator/js/response_handler'
         }
     }
 };

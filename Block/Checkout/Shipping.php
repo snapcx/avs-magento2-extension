@@ -5,7 +5,6 @@
  */
 namespace Jframeworks\Addressvalidator\Block\Checkout;
 
-
 /**
  * Multishipping checkout shipping
  *
@@ -13,8 +12,8 @@ namespace Jframeworks\Addressvalidator\Block\Checkout;
  */
 class Shipping extends \Magento\Framework\View\Element\Template
 {
-	
-	protected $_customerSession;
+    
+    protected $_customerSession;
     /**
      * @var \Magento\Framework\Filter\DataObject\GridFactory
      */
@@ -28,15 +27,15 @@ class Shipping extends \Magento\Framework\View\Element\Template
      * @param array $data
      */
     public function __construct(
-		\Magento\Framework\View\Element\Template\Context $context,
-		\Magento\Customer\Model\Session $customerSession,
-		array $data = []
-	){
-		$this->_customerSession = $customerSession;
-		parent::__construct($context, $data);
-	}
-	
-	public function getJframeworksResult() 
+        \Magento\Framework\View\Element\Template\Context $context,
+        \Magento\Customer\Model\Session $customerSession,
+        array $data = []
+    ) {
+        $this->_customerSession = $customerSession;
+        parent::__construct($context, $data);
+    }
+    
+    public function getJframeworksResult()
     {
         return $this->_customerSession->getJframeworksResult();
     }
@@ -50,5 +49,4 @@ class Shipping extends \Magento\Framework\View\Element\Template
 		$result = "custom result";
         return $result;
     } */
-    
 }

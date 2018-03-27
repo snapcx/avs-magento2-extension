@@ -1,6 +1,7 @@
-<?php 
+<?php
 namespace Jframeworks\Addressvalidator\Block\Onepage\Addressvalidator;
-class Index extends  \Magento\Backend\Block\Template
+
+class Index extends \Magento\Backend\Block\Template
 {
-	
+    
 }
