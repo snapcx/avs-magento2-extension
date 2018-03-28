@@ -19,13 +19,17 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     protected $enable_global_config;
     protected $jframeworks_global_api_url;
     protected $_countryCollectionFactory;
+    protected $productMetadata;
+    protected $moduleList;
 
     /**
      * @param \Magento\Framework\App\Helper\Context $context
      */
     public function __construct(
         \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig,
-        \Magento\Directory\Model\Region $countryCollectionFactory
+        \Magento\Directory\Model\Region $countryCollectionFactory,
+        \Magento\Framework\App\ProductMetadata $productMetadata,
+        \Magento\Framework\Module\ModuleListInterface $moduleList
     ) {
         $this->_scopeConfig = $scopeConfig;
         $this->enable_config =  $this->_scopeConfig->getValue(self::XML_CONFIG_ENABLE);
@@ -34,46 +38,66 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
         $this->enable_global_config =  $this->_scopeConfig->getValue(self::XML_CONFIG_GLOBAL_ENABLE);
         $this->jframeworks_global_api_url = $this->_scopeConfig->getValue(self::XML_SNAPCX_GLOBAL_API_URL);
         $this->_countryCollectionFactory = $countryCollectionFactory;
+        $this->productMetadata = $productMetadata;
+        $this->moduleList = $moduleList;
     }
     
     public function isenable()
     {
-        return  $this->enable_config;
+        return $this->enable_config;
     }
     
     public function isglobalenable()
     {
-        return  $this->enable_global_config;
+        return $this->enable_global_config;
     }
     
-    public function userkey()
+    public function getUserkey()
     {
-        return  empty($this->userkey)?'':$this->userkey;
+        return empty($this->userkey)?'':$this->userkey;
     }
     
     public function jframeworksapiurl()
     {
-        return  empty($this->jframeworksapiurl)?'':$this->jframeworksapiurl;
+        return empty($this->jframeworksapiurl)?'':$this->jframeworksapiurl;
     }
     
     public function jframeworksglobalapiurl()
     {
-        return  empty($this->jframeworks_global_api_url)?'':$this->jframeworks_global_api_url;
+        return empty($this->jframeworks_global_api_url)?'':$this->jframeworks_global_api_url;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMagentoVersion()
+    {
+        return $this->productMetadata->getVersion();
+    }
+
+    /**
+     * @return string
+     */
+    public function getExtensionVersion()
+    {
+        $moduleCode = 'Jframeworks_Shippingtracking';
+        $moduleInfo = $this->moduleList->getOne($moduleCode);
+        return $moduleInfo['setup_version'];
     }
     
     public function callApi($url)
     {
-    
-        //ok now lets call our API
-        
-        $user_key = $this->userkey();
-        
         // Start cURL
         $curl = curl_init();
+
         // Headers
-        $headers = [];
-        $headers[] = 'user_key:'.$user_key;
-        //$headers[] = 'Accept: application/json';
+        $headers = array(
+            'user_key: '.$this->getUserKey(),
+            'platform: magento',
+            'version: '.$this->getMagentoVersion(),
+            'pVersion: '.$this->getExtensionVersion()
+        );
+
         curl_setopt($curl, CURLOPT_URL, $url);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
