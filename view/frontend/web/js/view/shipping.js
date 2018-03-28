@@ -70,7 +70,7 @@ define(
             if (this.validateShippingInformation()) {
                 setShippingInformationAction().done(
                     function () {
-                            if (customer.isLoggedIn()) {
+                        if (customer.isLoggedIn()) {
                             checkData = quote.shippingAddress();
                             //console.log (checkData);
                             
@@ -96,10 +96,10 @@ define(
                             
                             if (state == '') {
                             if ($('div[name="shippingAddress.region_id"]').attr('style') == "display: none;") {
-                                state = $('input[name="region"]').val();
+                                    state = $('input[name="region"]').val();
                                     $('select[name="region_id"]').val($('select[name="region_id"] option:first').val());
                                 } else {
-                                    state = $('select[name="region_id"] option:selected').text();
+                                    state = $('div[name="shippingAddress.region_id"] select[name="region_id"] option:selected').text();
                                     $('input[name="region"]').val('');
                                 }
                             }
@@ -136,10 +136,10 @@ define(
                             
                             
                             if ($('div[name="shippingAddress.region_id"]').attr('style') == "display: none;") {
-                            var state = $('input[name="region"]').val();
+                                var state = $('input[name="region"]').val();
                                 $('select[name="region_id"]').val($('select[name="region_id"] option:first').val());
                             } else {
-                                var state = $('select[name="region_id"] option:selected').text();
+                                var state = $('div[name="shippingAddress.region_id"] select[name="region_id"] option:selected').text();
                                 $('input[name="region"]').val('');
                             }
                             
