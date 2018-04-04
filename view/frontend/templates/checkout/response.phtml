@@ -1,6 +1,7 @@
 <?php
 //multishipping edit address form page
 $results = $block->getJframeworksResult();
+$result = "";
 
 if (is_array($results)) {
     foreach ($results as $res) {
@@ -28,11 +29,11 @@ if ($result != "") {
     ?>
     <script type="text/x-magento-init">
 {
-	
 "*": {
         "Jframeworks_Addressvalidator/js/response_handler": <?php echo $result ?>
     }
 }
+
 
     </script>
 <?php } ?>
