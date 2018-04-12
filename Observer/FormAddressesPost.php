@@ -204,7 +204,8 @@ class FormAddressesPost implements ObserverInterface
         
         if (($country != 'US' && $this->helper->isglobalenable() == 1) || $country == 'US') {
             //Call the api via curl
-            if (!$response=$this->helper->callApi($request_url)) {
+            $response = $this->helper->callApi($request_url);
+            if (!$response) {
                 return $observer;
             }
             

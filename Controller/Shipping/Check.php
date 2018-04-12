@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © 2015 Inchoo d.o.o.
+ * Copyright ï¿½ 2015 Inchoo d.o.o.
  * created by Zoran Salamun(zoran.salamun@inchoo.net)
  */
 namespace Jframeworks\Addressvalidator\Controller\Shipping;
@@ -92,7 +92,8 @@ class Check extends \Magento\Framework\App\Action\Action
             }
 
             //Call the api via curl
-            if (!$response=$this->helper->callApi($request_url)) {
+            $response = $this->helper->callApi($request_url);
+            if (!$response) {
                 $resultArray = json_encode(['error'=>false]);
                  $resultJson = $this->resultFactory->create(ResultFactory::TYPE_JSON);
                  $resultJson->setData($resultArray);

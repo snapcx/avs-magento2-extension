@@ -53,7 +53,7 @@ class AddressesPost implements ObserverInterface
         $address_read = [];
         
         if ($this->helper->isenable() != 1) {
-            return $observer;
+            return;
         }
         
         if (count($this->_request->getPost('ship'))) {
@@ -98,7 +98,8 @@ class AddressesPost implements ObserverInterface
 
                     if (($country != 'US' && $this->helper->isglobalenable() == 1) || $country == 'US') {
                         //Call the api via curl
-                        if (!$response=$this->helper->callApi($request_url)) {
+                        $response = $this->helper->callApi($request_url);
+                        if (!$response) {
                             return $observer;
                         }
 

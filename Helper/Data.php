@@ -21,6 +21,7 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     protected $_countryCollectionFactory;
     protected $productMetadata;
     protected $moduleList;
+    protected $curl;
 
     /**
      * @param \Magento\Framework\App\Helper\Context $context
@@ -29,7 +30,8 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
         \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig,
         \Magento\Directory\Model\Region $countryCollectionFactory,
         \Magento\Framework\App\ProductMetadata $productMetadata,
-        \Magento\Framework\Module\ModuleListInterface $moduleList
+        \Magento\Framework\Module\ModuleListInterface $moduleList,
+        \Magento\Framework\HTTP\Adapter\Curl $curl
     ) {
         $this->_scopeConfig = $scopeConfig;
         $this->enable_config =  $this->_scopeConfig->getValue(self::XML_CONFIG_ENABLE);
@@ -40,6 +42,7 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
         $this->_countryCollectionFactory = $countryCollectionFactory;
         $this->productMetadata = $productMetadata;
         $this->moduleList = $moduleList;
+        $this->curl = $curl;
     }
     
     public function isenable()
@@ -84,42 +87,41 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
         $moduleInfo = $this->moduleList->getOne($moduleCode);
         return $moduleInfo['setup_version'];
     }
-    
-    public function callApi($url)
-    {
-        // Start cURL
-        $curl = curl_init();
 
-        // Headers
-        $headers = array(
+    public function getCurlHeaders()
+    {
+        return array(
             'user_key: '.$this->getUserKey(),
             'platform: magento',
             'version: '.$this->getMagentoVersion(),
             'pVersion: '.$this->getExtensionVersion()
         );
+    }
 
-        curl_setopt($curl, CURLOPT_URL, $url);
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
-        curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
-        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($curl, CURLOPT_HEADER, false);
-    
+    public function callApi($url)
+    {
+        // Start cURL
+        $this->curl->setOptions(array(
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_SSL_VERIFYPEER => false,
+        ));
+        $this->curl->setConfig(array(
+            'header' => false
+        ));
         // Get response
-        $response = curl_exec($curl);
-    
-        // Get HTTP status code
-        $status = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+        $this->curl->write('GET', $url, '1.1', $this->getCurlHeaders());
+        $response = $this->curl->read();
         //TODO put status check for "200".
-        // Close cURL
-        curl_close($curl);
+        $status = $this->curl->getInfo(CURLINFO_HTTP_CODE);
 
-        if ($response!='') {
-            $response = json_decode($response);
-            return $response;
-        } else {
-            return false;
+        // Close cURL
+        $this->curl->close();
+
+        if ($response != '') {
+            return json_decode($response);
         }
+
+        return false;
     }
     
     /**
