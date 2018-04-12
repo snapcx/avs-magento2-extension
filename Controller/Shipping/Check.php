@@ -23,7 +23,7 @@ class Check extends \Magento\Framework\App\Action\Action
     
     public function execute()
     {
-        if ($this->helper->isenable() == 1) {
+        if ($this->helper->isEnable() == 1) {
             $post_addr1 = $this->_request->getParam('post_addr1');
             $post_addr2 = $this->_request->getParam('post_addr2');
             $post_city  = $this->_request->getParam('post_city');
@@ -80,10 +80,10 @@ class Check extends \Magento\Framework\App\Action\Action
             $url = '?request_id='.$requestId.'&street='.urlencode($address_1).'&secondary='.urlencode($address_2).'&state='.urlencode($state).'&city='.urlencode($city).'&zipcode='.urlencode($zip).'&country='.urlencode($country);
             
 
-            if ($country != 'US' && $this->helper->isglobalenable() == 1) {
-                $request_url = $this->helper->jframeworksglobalapiurl().$url;
+            if ($country != 'US' && $this->helper->isGlobalValidationEnable() == 1) {
+                $request_url = $this->helper->getJframeworksGlobalApiUrl().$url;
             } elseif ($country == 'US') {
-                $request_url = $this->helper->jframeworksapiurl().$url;
+                $request_url = $this->helper->getJframeworksApiUrl().$url;
             } else {
                 $resultArray = json_encode(['error'=>false]);
                 $resultJson = $this->resultFactory->create(ResultFactory::TYPE_JSON);

@@ -66,7 +66,7 @@ class FormAddressesPost implements ObserverInterface
         $default_shipping = $this->_request->getPost('default_shipping');
 
         
-        if ($this->helper->isenable() != 1) {
+        if ($this->helper->isEnable() != 1) {
             return $observer;
         }
         
@@ -193,16 +193,16 @@ class FormAddressesPost implements ObserverInterface
         //generate a unique request id
         $requestId = 'Magento_' . time();
         
-        if ($country != 'US' && $this->helper->isglobalenable() == 1) {
+        if ($country != 'US' && $this->helper->isGlobalValidationEnable() == 1) {
             $url = '?request_id='.$requestId.'&street='.urlencode($address_1).'&secondary='.urlencode($address_2).'&state='.urlencode($state).'&city='.urlencode($city).'&zipcode='.urlencode($zip).'&country='.urlencode($country);
-            $request_url = $this->helper->jframeworksglobalapiurl().$url;
+            $request_url = $this->helper->getJframeworksGlobalApiUrl().$url;
         } elseif ($country == 'US') {
             $url = '?request_id='.$requestId.'&street='.urlencode($address_1).'&secondary='.urlencode($address_2).'&state='.urlencode($state).'&city='.urlencode($city).'&zipcode='.urlencode($zip);
-            $request_url = $this->helper->jframeworksapiurl().$url;
+            $request_url = $this->helper->getJframeworksApiUrl().$url;
         }
         
         
-        if (($country != 'US' && $this->helper->isglobalenable() == 1) || $country == 'US') {
+        if (($country != 'US' && $this->helper->isGlobalValidationEnable() == 1) || $country == 'US') {
             //Call the api via curl
             $response = $this->helper->callApi($request_url);
             if (!$response) {

@@ -45,29 +45,29 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
         $this->curl = $curl;
     }
     
-    public function isenable()
+    public function isEnable()
     {
         return $this->enable_config;
     }
     
-    public function isglobalenable()
+    public function isGlobalValidationEnable()
     {
         return $this->enable_global_config;
     }
     
     public function getUserkey()
     {
-        return empty($this->userkey)?'':$this->userkey;
+        return empty($this->userkey) ? '' : $this->userkey;
     }
     
-    public function jframeworksapiurl()
+    public function getJframeworksApiUrl()
     {
-        return empty($this->jframeworksapiurl)?'':$this->jframeworksapiurl;
+        return empty($this->jframeworksapiurl) ? '' : $this->jframeworksapiurl;
     }
     
-    public function jframeworksglobalapiurl()
+    public function getJframeworksGlobalApiUrl()
     {
-        return empty($this->jframeworks_global_api_url)?'':$this->jframeworks_global_api_url;
+        return empty($this->jframeworks_global_api_url) ? '' : $this->jframeworks_global_api_url;
     }
 
     /**

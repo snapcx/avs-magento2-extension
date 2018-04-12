@@ -52,7 +52,7 @@ class AddressesPost implements ObserverInterface
         $results = [];
         $address_read = [];
         
-        if ($this->helper->isenable() != 1) {
+        if ($this->helper->isEnable() != 1) {
             return;
         }
         
@@ -89,14 +89,14 @@ class AddressesPost implements ObserverInterface
                         
                         
                         
-                    if ($country != 'US' && $this->helper->isglobalenable() == 1) {
-                        $request_url = $this->helper->jframeworksglobalapiurl().$url;
+                    if ($country != 'US' && $this->helper->isGlobalValidationEnable() == 1) {
+                        $request_url = $this->helper->getJframeworksGlobalApiUrl().$url;
                     } elseif ($country == 'US') {
-                        $request_url = $this->helper->jframeworksapiurl().$url;
+                        $request_url = $this->helper->getJframeworksApiUrl().$url;
                     }
                         
 
-                    if (($country != 'US' && $this->helper->isglobalenable() == 1) || $country == 'US') {
+                    if (($country != 'US' && $this->helper->isGlobalValidationEnable() == 1) || $country == 'US') {
                         //Call the api via curl
                         $response = $this->helper->callApi($request_url);
                         if (!$response) {
