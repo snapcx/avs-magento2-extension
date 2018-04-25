@@ -246,8 +246,11 @@ class FormAddressesPost implements ObserverInterface
                         }
                         $results[$i] = json_encode($result);
                         $this->customerSession->setJframeworksResult($results);
+                    } else {
+                        $this->customerSession->setJframeworksResult(array(json_encode($result)));
                     }
-                
+
+                    $errorMessage = isset($result['message']) ? $result['message'] : '';
                     $this->_responseFactory->create()->setRedirect($referUrl)->sendResponse();
                     throw new \Magento\Framework\Exception\LocalizedException("We Can not save this address");
                 }
